@@ -1,15 +1,16 @@
 const express=require("express");
-const cors=require('cors');
 const app=express();
 const sqlite3=require('sqlite3').verbose();
 const db=new sqlite3.Database('NotepadDatabase.db');
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
 
-app.use(cors({
-    origin: '*'
-  }));
-
+app.use((req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+    next();
+  })
 db.serialize(function(){
     db.run("DROP TABLE IF EXISTS Users");
     db.run("CREATE TABLE Users(username TEXT,password TEXT)");
