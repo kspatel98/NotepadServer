@@ -5,7 +5,6 @@ const sqlite3=require('sqlite3').verbose();
 const db=new sqlite3.Database('NotepadDatabase.db');
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
-const cors = require("cors");
 
 app.use(cors({
     origin: '*'
