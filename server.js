@@ -26,6 +26,7 @@ app.post('/signup',function(req,responce){
     {
         console.log("password match")
         db.all("SELECT * FROM Users WHERE username=?",username,function(err,output){
+            console.log(output)
             if(output[0]!=null)
             {
                 console.log("username exist")
