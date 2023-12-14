@@ -9,12 +9,7 @@ app.use(express.urlencoded({extended:false}));
 app.use(cors({
     origin: '*'
   }));
-  app.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT");
-    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-    next();
-  })
+
 db.serialize(function(){
     db.run("DROP TABLE IF EXISTS Users");
     db.run("CREATE TABLE Users(username TEXT,password TEXT)");
@@ -40,7 +35,7 @@ app.post('/signup',function(req,responce){
                 db.run("INSERT INTO Users(username,password) VALUES (?,?)",username,password,function(err,result){
                     if(err==null)
                     {
-                        responce({message:"User has been registered successfully.",color:"green"});
+                        responce.send({message:"User has been registered successfully.",color:"green"});
                     }
                 })
             }
