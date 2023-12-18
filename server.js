@@ -17,7 +17,6 @@ app.use((req, res, next) => {
     next();
 })
 db.serialize(function () {
-    db.run("DROP TABLE IF EXISTS Users");
     db.run("CREATE TABLE Users(username TEXT,password TEXT)");
 })
 
