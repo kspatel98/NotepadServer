@@ -1,3 +1,4 @@
+const job=require('~/cron.js');
 const express = require("express");
 const cors = require('cors');
 const app = express();
@@ -6,7 +7,7 @@ const db = new sqlite3.Database('NotepadDatabase.db');
 let UName = "";
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-
+job.start();
 app.use(cors({
     origin: '*'
 }));
