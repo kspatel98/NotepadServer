@@ -1,4 +1,6 @@
-const job=require('~/cron.js');
+const cron = require ('node-cron');
+const https = require('https');
+const backendUrl = 'https://notepadserver.onrender.com';
 const express = require("express");
 const cors = require('cors');
 const app = express();
@@ -7,7 +9,6 @@ const db = new sqlite3.Database('NotepadDatabase.db');
 let UName = "";
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-job.start();
 app.use(cors({
     origin: '*'
 }));
@@ -17,6 +18,24 @@ app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Headers", "Content-Type");
     next();
 })
+cron.schedule('*/14 * * * *', function() {
+    console.log ('Restarting server');
+https
+.get (backendUrl, (res) =>
+    {
+        if (res.statusCode==200) {
+            console.log('Server restarted');
+        }
+        else {
+        console. error (
+            `failed to restart server with status code: ${res.statusCode}`
+        ) ;
+        }
+    })
+.on('error', (err) => {
+console.error('Error during Restart:',err. message);
+});
+});
 db.serialize(function () {
     db.run("DROP TABLE IF EXISTS Users");
     db.run("CREATE TABLE Users(username TEXT,password TEXT)");
