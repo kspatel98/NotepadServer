@@ -17,6 +17,7 @@ app.use((req, res, next) => {
     next();
 })
 db.serialize(function () {
+    db.run("DROP TABLE IF EXISTS Users");
     db.run("CREATE TABLE Users(username TEXT,password TEXT)");
 })
 
@@ -42,7 +43,9 @@ app.post('/signup', function (req, responce) {
                 db.run("INSERT INTO Users(username,password) VALUES (?,?)", username, password, function (err, result) {
                     if (err == null) {
                         const stmt = "CREATE TABLE " + username + "(key TEXT,value TEXT)";
+                        const stmt1="DROP TABLE IF EXISTS "+username;
                         db.serialize(function () {
+                            db.run(stmt1);
                             db.run(stmt, function (error, res) {
                                 if (error == null) {
                                     responce.send({ message: "User has been registered successfully.", color: "green" });
