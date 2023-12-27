@@ -96,6 +96,27 @@ app.post('/login', function (req, response) {
     })
 })
 
+app.post('/save', function (req, response) {
+    let filename = req.body.filename;
+    let content = req.body.content;
+    let stmt="INSERT INTO "+UName+"(key,value) VALUES (?,?)";
+    db.run(stmt, filename, content, function (err, result){
+        if(err==null)
+        {
+            response.send({message: "File save successful"});
+        }
+    })
+})
+
+app.post('/getFiles', function (req, response) {
+    let stmt="SELECT key FROM "+UName;
+    db.all(stmt, function (err, result){
+        if (result[0] != null) {
+            response.send(result[0]);
+        }
+    })
+})
+
 const server = app.listen(process.env.PORT, function () {
     console.log("NotepadDatabase is listening..")
 });
