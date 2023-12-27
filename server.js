@@ -111,8 +111,8 @@ app.post('/save', function (req, response) {
 app.post('/getFiles', function (req, response) {
     let stmt="SELECT key FROM "+UName;
     db.all(stmt, function (err, result){
-        if (result[0] != null) {
-            response.send(result[0]);
+        if (result != null) {
+            response.send(result);
         }
     })
 })
