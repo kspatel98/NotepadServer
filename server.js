@@ -99,11 +99,38 @@ app.post('/login', function (req, response) {
 app.post('/save', function (req, response) {
     let filename = req.body.filename;
     let content = req.body.content;
-    let stmt="INSERT INTO "+UName+"(key,value) VALUES (?,?)";
-    db.run(stmt, filename, content, function (err, result){
-        if(err==null)
+    let statement="SELECT * FROM "+UName+" WHERE key="+filename;
+    db.all(statement,function(error,output){
+        if(output[0]!=null)
         {
-            response.send({message: "File save successful"});
+            let stmt="UPDATE "+UName+" SET value="+content+" WHERE key="+filename;
+            db.all(stmt,function(err,result){
+                if(err==null)
+                {
+                    response.send({message: "File has been saved successfully"});
+                }
+            })
+        }
+        else
+        {
+            let stmt="INSERT INTO "+UName+"(key,value) VALUES (?,?)";
+            db.run(stmt, filename, content, function (err, result){
+                if(err==null)
+                {
+                    response.send({message: "New file created successful"});
+                }
+            })
+        }
+    })
+})
+
+app.post('/open',function(req,res){
+    let filename=req.body.filename;
+    let statement="SELECT value FROM "+UName+" WHERE key="+filename;
+    db.all(statement,function(error,result){
+        if(result!=null)
+        {
+            res.send(result);
         }
     })
 })
