@@ -10,10 +10,10 @@ let UName = "";
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors({
-    origin: 'https://notepad-gules-eight.vercel.app'
+    origin: '*'
 }));
 app.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "https://notepad-gules-eight.vercel.app");
+    res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT");
     res.setHeader("Access-Control-Allow-Headers", "Content-Type");
     next();
@@ -80,6 +80,7 @@ app.post('/signup', function (req, responce) {
     else {
         responce.send({ message: "Confirm Password does not match with the Password!", color: "red" });
     }
+    responce.set('Access-Control-Allow-Origin', '*');
 })
 
 app.post('/login', function (req, response) {
@@ -94,6 +95,7 @@ app.post('/login', function (req, response) {
             response.send({ message: "Username and/or Password is incorrect!", color: "red" });
         }
     })
+    response.set('Access-Control-Allow-Origin', '*');
 })
 
 app.post('/save', function (req, response) {
@@ -122,6 +124,7 @@ app.post('/save', function (req, response) {
             })
         }
     })
+    response.set('Access-Control-Allow-Origin', '*');
 })
 
 app.post('/open',function(req,res){
@@ -130,6 +133,7 @@ app.post('/open',function(req,res){
     db.all(statement,function(error,result){
         if(result!=null)
         {
+            res.set('Access-Control-Allow-Origin', '*');
             res.send(result);
         }
     })
@@ -139,6 +143,7 @@ app.post('/getFiles', function (req, response) {
     let stmt="SELECT key FROM "+UName;
     db.all(stmt, function (err, result){
         if (result != null) {
+            response.set('Access-Control-Allow-Origin', '*');
             response.send(result);
         }
     })
