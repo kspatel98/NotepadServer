@@ -1,14 +1,14 @@
-import { schedule } from 'node-cron';
-import { get } from 'https';
+const cron = require ('node-cron');
+const https = require('https');
 const backendUrl = 'https://notepadserver.onrender.com';
-import express, { json, urlencoded } from "express";
-import cors from 'cors';
+const express = require("express");
+const cors = require('cors');
 const app = express();
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('NotepadDatabase.db');
 let UName = "";
-app.use(json());
-app.use(urlencoded({ extended: false }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 app.use(cors({
     origin: '*',
     credentials: true,
@@ -19,9 +19,10 @@ app.use(cors({
 //     res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 //     next();
 // })
-schedule('*/14 * * * *', function() {
+cron.schedule('*/14 * * * *', function() {
     console.log ('Restarting server');
-    get (backendUrl, (res) =>
+https
+.get (backendUrl, (res) =>
     {
         if (res.statusCode==200) {
             console.log('Server restarted');
