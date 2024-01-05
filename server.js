@@ -53,9 +53,11 @@ app.post('/signup', function (req, responce) {
             if (output[0] != null) {
                 db.all("SELECT * FROM Users WHERE username=? AND password=?", username, password, function (err, output) {
                     if (output[0] != null) {
+                        responce.set('Access-Control-Allow-Origin', '*');
                         responce.send({ message: "This account has already been registered!!", color: "gold" });
                     }
                     else {
+                        responce.set('Access-Control-Allow-Origin', '*');
                         responce.send({ message: "This username is already taken!!", color: "red" });
                     }
                 });
@@ -69,6 +71,7 @@ app.post('/signup', function (req, responce) {
                             db.run(stmt1);
                             db.run(stmt, function (error, res) {
                                 if (error == null) {
+                                    responce.set('Access-Control-Allow-Origin', '*');
                                     responce.send({ message: "User has been registered successfully.", color: "green" });
                                 }
                             })
@@ -79,6 +82,7 @@ app.post('/signup', function (req, responce) {
         })
     }
     else {
+        responce.set('Access-Control-Allow-Origin', '*');
         responce.send({ message: "Confirm Password does not match with the Password!", color: "red" });
     }
 })
@@ -89,9 +93,11 @@ app.post('/login', function (req, response) {
     db.all("SELECT * FROM Users WHERE username=? AND password=?", username, password, function (error, output) {
         if (output[0] != null) {
             UName = username;
+            response.set('Access-Control-Allow-Origin', '*');
             response.send({ message: "Username " + username + " has been logged in successfully.", color: "green" });
         }
         else {
+            response.set('Access-Control-Allow-Origin', '*');
             response.send({ message: "Username and/or Password is incorrect!", color: "red" });
         }
     })
@@ -108,6 +114,7 @@ app.post('/save', function (req, response) {
             db.all(stmt,function(err,result){
                 if(err==null)
                 {
+                    response.set('Access-Control-Allow-Origin', '*');
                     response.send({message: "File has been saved successfully"});
                 }
             })
@@ -118,6 +125,7 @@ app.post('/save', function (req, response) {
             db.run(stmt, filename, content, function (err, result){
                 if(err==null)
                 {
+                    response.set('Access-Control-Allow-Origin', '*');
                     response.send({message: "New file created successful"});
                 }
             })
@@ -131,6 +139,7 @@ app.post('/open',function(req,res){
     db.all(statement,function(error,result){
         if(result!=null)
         {
+            res.set('Access-Control-Allow-Origin', '*');
             res.send(result);
         }
     })
@@ -140,6 +149,7 @@ app.post('/getFiles', function (req, response) {
     let stmt="SELECT key FROM "+UName;
     db.all(stmt, function (err, result){
         if (result != null) {
+            response.set('Access-Control-Allow-Origin', '*');
             response.send(result);
         }
     })
