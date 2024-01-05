@@ -42,7 +42,7 @@ db.serialize(function () {
     db.run("CREATE TABLE Users(username TEXT,password TEXT)");
 })
 
-app.get('/signup', function (req, responce) {
+app.post('/signup', function (req, responce) {
     console.log(req.body);
     let username = req.body.username;
     let password = req.body.password;
@@ -87,7 +87,7 @@ app.get('/signup', function (req, responce) {
     }
 })
 
-app.get('/login', function (req, response) {
+app.post('/login', function (req, response) {
     let username = req.body.username;
     let password = req.body.password;
     db.all("SELECT * FROM Users WHERE username=? AND password=?", username, password, function (error, output) {
@@ -103,7 +103,7 @@ app.get('/login', function (req, response) {
     })
 })
 
-app.get('/save', function (req, response) {
+app.post('/save', function (req, response) {
     let filename = req.body.filename;
     let content = req.body.content;
     let statement="SELECT * FROM "+UName+" WHERE key="+filename;
@@ -133,7 +133,7 @@ app.get('/save', function (req, response) {
     })
 })
 
-app.get('/open',function(req,res){
+app.post('/open',function(req,res){
     let filename=req.body.filename;
     let statement="SELECT value FROM "+UName+" WHERE key="+filename;
     db.all(statement,function(error,result){
@@ -145,7 +145,7 @@ app.get('/open',function(req,res){
     })
 })
 
-app.get('/getFiles', function (req, response) {
+app.post('/getFiles', function (req, response) {
     let stmt="SELECT key FROM "+UName;
     db.all(stmt, function (err, result){
         if (result != null) {
