@@ -10,8 +10,7 @@ let UName = "";
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors({
-    origin: '*',
-    credentials: true,
+    origin: 'https://notepad-gules-eight.vercel.app'
 }));
 app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
