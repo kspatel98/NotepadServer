@@ -87,7 +87,7 @@ app.post('/signup', function (req, responce) {
     }
 })
 
-app.post('/login', function (req, response) {
+app.get('/login', function (req, response) {
     let username = req.body.username;
     let password = req.body.password;
     db.all("SELECT * FROM Users WHERE username=? AND password=?", username, password, function (error, output) {
@@ -145,7 +145,7 @@ app.post('/open',function(req,res){
     })
 })
 
-app.post('/getFiles', function (req, response) {
+app.get('/getFiles', function (req, response) {
     let stmt="SELECT key FROM "+UName;
     db.all(stmt, function (err, result){
         if (result != null) {
