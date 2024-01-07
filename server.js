@@ -105,7 +105,6 @@ app.post('/save', function (req, response) {
     let filename = req.body.filename;
     let content = req.body.content;
     let statement="SELECT * FROM "+UName+" WHERE key="+filename;
-    console.log("entered into save on server")
     db.all(statement,function(error,output){
         if(output!=null)
         {
@@ -113,7 +112,6 @@ app.post('/save', function (req, response) {
             db.all(stmt,function(err,result){
                 if(err==null)
                 {
-                    console.log("file saved on server")
                     response.set('Access-Control-Allow-Origin', '*');
                     response.send({message: "File has been saved successfully"});
                 }
@@ -125,7 +123,6 @@ app.post('/save', function (req, response) {
             db.run(stmt, filename, content, function (err, result){
                 if(err==null)
                 {
-                    console.log("file created on server")
                     response.set('Access-Control-Allow-Origin', '*');
                     response.send({message: "New file created successful"});
                 }
