@@ -41,14 +41,16 @@ db.serialize(function () {
 })
 
 app.post('/signup', function (req, responce) {
+    console.log(req.body);
     let username = req.body.username;
     let password = req.body.password;
     let cpassword = req.body.cpassword;
+    console.log("enter signup")
     if (password == cpassword) {
         db.all("SELECT * FROM Users WHERE username=?", username, function (err, output) {
-            if (output != null) {
+            if (output[0] != null) {
                 db.all("SELECT * FROM Users WHERE username=? AND password=?", username, password, function (err, output) {
-                    if (output != null) {
+                    if (output[0] != null) {
                         responce.set('Access-Control-Allow-Origin', '*');
                         responce.send({ message: "This account has already been registered!!", color: "gold" });
                     }
@@ -87,7 +89,7 @@ app.post('/login', function (req, response) {
     let username = req.body.username;
     let password = req.body.password;
     db.all("SELECT * FROM Users WHERE username=? AND password=?", username, password, function (error, output) {
-        if (output != null) {
+        if (output[0] != null) {
             UName = username;
             response.set('Access-Control-Allow-Origin', '*');
             response.send({ message: "Username " + username + " has been logged in successfully.", color: "green" });
