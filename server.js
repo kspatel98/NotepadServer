@@ -41,11 +41,9 @@ db.serialize(function () {
 })
 
 app.post('/signup', function (req, responce) {
-    console.log(req.body);
     let username = req.body.username;
     let password = req.body.password;
     let cpassword = req.body.cpassword;
-    console.log("enter signup")
     if (password == cpassword) {
         db.all("SELECT * FROM Users WHERE username=?", username, function (err, output) {
             if (output != null) {
