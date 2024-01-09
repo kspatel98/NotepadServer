@@ -133,7 +133,7 @@ app.post('/save', function (req, response) {
 
 app.post('/open',function(req,res){
     let filename=req.body.filename;
-    let statement="SELECT value FROM "+UName+" WHERE key="+filename;
+    let statement="SELECT * FROM "+UName+" WHERE key="+filename;
     db.all(statement,function(error,result){
         if(result!=null)
         {
