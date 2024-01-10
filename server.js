@@ -108,7 +108,7 @@ app.post('/save', function (req, response) {
     db.all(statement,function(error,output){
         if(output!=null)
         {
-            let stmt="UPDATE "+UName+" SET value="+content+" WHERE key='"+filename+"'";
+            let stmt="UPDATE "+UName+" SET value="+content+" WHERE key="+filename;
             db.all(stmt,function(err,result){
                 if(err==null)
                 {
