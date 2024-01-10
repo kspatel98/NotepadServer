@@ -129,6 +129,18 @@ app.post('/update', function (req, response) {
 
 })
 
+app.post('/delete',function(req,response){
+    let filename = req.body.filename;
+    let user = req.body.user;
+    db.run("DELETE FROM ? WHERE key=?",user,filename,function(err,result){
+        if(err==null)
+        {
+            response.set('Access-Control-Allow-Origin', '*');
+            response.send({ message: "File has been deleted successfully" });
+        }
+    })
+})
+
 app.post('/open', function (req, res) {
     console.log("open...");
     let filename = req.body.filename;
