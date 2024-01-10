@@ -117,7 +117,7 @@ app.post('/update', function (req, response) {
     let content = req.body.content;
     let user = req.body.user;
     let stmt = "UPDATE " + user + " SET value='" + content + "' WHERE key='" + filename+"'";
-    db.all(stmt, function (err, result) {
+    db.run(stmt, function (err, result) {
         console.log(err)
         if (err == null) {
             response.set('Access-Control-Allow-Origin', '*');
