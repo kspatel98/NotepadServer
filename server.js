@@ -132,7 +132,8 @@ app.post('/update', function (req, response) {
 app.post('/delete',function(req,response){
     let filename = req.body.filename;
     let user = req.body.user;
-    db.run("DELETE FROM ? WHERE key=?",user,filename,function(err,result){
+    let stmt="DELETE FROM "+user+" WHERE key="+filename;
+    db.run(stmt,function(err,result){
         if(err==null)
         {
             response.set('Access-Control-Allow-Origin', '*');
@@ -145,6 +146,8 @@ app.post('/open', function (req, res) {
     console.log("open...");
     let filename = req.body.filename;
     let user = req.body.user;
+    console.log(filename);
+    console.log(user);
     let stmt = "SELECT value FROM " + user + " WHERE key='" + filename + "'";
     db.all(stmt, function (error, result) {
         console.log(result);
