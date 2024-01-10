@@ -116,10 +116,12 @@ app.post('/update', function (req, response) {
     let filename = req.body.filename;
     let content = req.body.content;
     let user = req.body.user;
-    let stmt = "UPDATE " + user + " SET value=" + content + " WHERE key='" + filename+"'";
-    db.run(stmt, function (err, result) {
-        console.log(err)
+    console.log("filename:"+filename+" Content:"+content+" user:"+user);
+    let stmt = "UPDATE " + user + " SET value=? WHERE key='" + filename+"'";
+    db.run(stmt,content, function (err, result) {
+        console.log("Got into db.run statement for update..");
         if (err == null) {
+            console.log("Update reached...");
             response.set('Access-Control-Allow-Origin', '*');
             response.send({ message: "File has been saved successfully" });
         }
