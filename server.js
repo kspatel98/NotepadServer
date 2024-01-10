@@ -104,7 +104,8 @@ app.post('/login', function (req, response) {
 app.post('/save', function (req, response) {
     let filename = req.body.filename;
     let content = req.body.content;
-    let statement="SELECT * FROM "+UName+" WHERE key="+filename;
+    let user=req.body.user;
+    let statement="SELECT * FROM "+user+" WHERE key="+filename;
     db.all(statement,function(error,output){
         console.log("op",output);
         if(output!=null)
