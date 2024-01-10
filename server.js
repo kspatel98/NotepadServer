@@ -135,7 +135,8 @@ app.post('/open',function(req,res){
     console.log("open...");
     let filename=req.body.filename;
     let user=req.body.user;
-    db.all("SELECT value FROM ? WHERE key=?",user,filename,function(error,result){
+    let stmt="SELECT value FROM ? WHERE key='?'";
+    db.all(stmt,user,filename,function(error,result){
         console.log(result);
         if(result!=null)
         {
