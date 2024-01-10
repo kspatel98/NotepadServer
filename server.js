@@ -116,8 +116,9 @@ app.post('/update', function (req, response) {
     let filename = req.body.filename;
     let content = req.body.content;
     let user = req.body.user;
+    console.log("update started....");
     console.log("filename:"+filename+" Content:"+content+" user:"+user);
-    let stmt = "UPDATE " + user + " SET value=? WHERE key='" + filename+"'";
+    let stmt = "UPDATE "+user+" SET value=? WHERE key='"+filename+"'";
     db.run(stmt,content, function (err, result) {
         console.log("Got into db.run statement for update..");
         if (err == null) {
