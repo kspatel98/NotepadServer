@@ -1,4 +1,4 @@
-const cron = require ('node-cron');
+const cron = require('node-cron');
 const https = require('https');
 const backendUrl = 'https://notepadserver.onrender.com';
 const express = require("express");
@@ -17,23 +17,22 @@ app.options('*', cors())
 //     res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization,X-Requested-With");
 //     next();
 // })
-cron.schedule('*/14 * * * *', function() {
-    console.log ('Restarting server');
-https
-.get (backendUrl, (res) =>
-    {
-        if (res.statusCode==200) {
-            console.log('Server restarted');
-        }
-        else {
-        console. error (
-            `failed to restart server with status code: ${res.statusCode}`
-        ) ;
-        }
-    })
-.on('error', (err) => {
-console.error('Error during Restart:',err. message);
-});
+cron.schedule('*/14 * * * *', function () {
+    console.log('Restarting server');
+    https
+        .get(backendUrl, (res) => {
+            if (res.statusCode == 200) {
+                console.log('Server restarted');
+            }
+            else {
+                console.error(
+                    `failed to restart server with status code: ${res.statusCode}`
+                );
+            }
+        })
+        .on('error', (err) => {
+            console.error('Error during Restart:', err.message);
+        });
 });
 db.serialize(function () {
     db.run("DROP TABLE IF EXISTS Users");
@@ -64,7 +63,7 @@ app.post('/signup', function (req, responce) {
                 db.run("INSERT INTO Users(username,password) VALUES (?,?)", username, password, function (err, result) {
                     if (err == null) {
                         const stmt = "CREATE TABLE " + username + "(key TEXT,value TEXT)";
-                        const stmt1="DROP TABLE IF EXISTS "+username;
+                        const stmt1 = "DROP TABLE IF EXISTS " + username;
                         db.serialize(function () {
                             db.run(stmt1);
                             db.run(stmt, function (error, res) {
@@ -104,44 +103,37 @@ app.post('/login', function (req, response) {
 app.post('/save', function (req, response) {
     let filename = req.body.filename;
     let content = req.body.content;
-    let user=req.body.user;
-    let statement="SELECT * FROM "+user+" WHERE key="+filename;
-    db.all(statement,function(error,output){
-        console.log("op",output);
-        if(output!=null)
-        {
-            let stmt="UPDATE "+UName+" SET value="+content+" WHERE key='"+filename+"'";
-            db.all(stmt,function(err,result){
-                if(err==null)
-                {
-                    response.set('Access-Control-Allow-Origin', '*');
-                    response.send({message: "File has been saved successfully"});
-                }
-            })
-        }
-        else
-        {
-            let stmt="INSERT INTO "+UName+"(key,value) VALUES (?,?)";
-            db.run(stmt, filename, content, function (err, result){
-                if(err==null)
-                {
-                    response.set('Access-Control-Allow-Origin', '*');
-                    response.send({message: "New file created successful"});
-                }
-            })
+    let user = req.body.user;
+    let stmt = "INSERT INTO " + user + "(key,value) VALUES (?,?)";
+    db.run(stmt, filename, content, function (err, result) {
+        if (err == null) {
+            response.set('Access-Control-Allow-Origin', '*');
+            response.send({ message: "New file created successful" });
         }
     })
 })
+app.post('/update', function (req, response) {
+    let filename = req.body.filename;
+    let content = req.body.content;
+    let user = req.body.user;
+    let stmt = "UPDATE " + UName + " SET value=" + content + " WHERE key='" + filename + "'";
+    db.all(stmt, function (err, result) {
+        if (err == null) {
+            response.set('Access-Control-Allow-Origin', '*');
+            response.send({ message: "File has been saved successfully" });
+        }
+    })
 
-app.post('/open',function(req,res){
+})
+
+app.post('/open', function (req, res) {
     console.log("open...");
-    let filename=req.body.filename;
-    let user=req.body.user;
-    let stmt="SELECT value FROM "+user+" WHERE key='"+filename+"'";
-    db.all(stmt,function(error,result){
+    let filename = req.body.filename;
+    let user = req.body.user;
+    let stmt = "SELECT value FROM " + user + " WHERE key='" + filename + "'";
+    db.all(stmt, function (error, result) {
         console.log(result);
-        if(result!=null)
-        {
+        if (result != null) {
             res.set('Access-Control-Allow-Origin', '*');
             res.send(result);
         }
@@ -149,8 +141,8 @@ app.post('/open',function(req,res){
 })
 
 app.post('/getFiles', function (req, response) {
-    let stmt="SELECT key FROM "+UName;
-    db.all(stmt, function (err, result){
+    let stmt = "SELECT key FROM " + UName;
+    db.all(stmt, function (err, result) {
         if (result != null) {
             response.set('Access-Control-Allow-Origin', '*');
             response.send(result);
