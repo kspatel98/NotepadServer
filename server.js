@@ -104,11 +104,11 @@ app.post('/login', function (req, response) {
 app.post('/save', function (req, response) {
     let filename = req.body.filename;
     let content = req.body.content;
-    let statement="SELECT * FROM "+UName+" WHERE key="+filename;
+    let statement="SELECT * FROM "+UName+" WHERE key='"+filename+"'";
     db.all(statement,function(error,output){
         if(output!=null)
         {
-            let stmt="UPDATE "+UName+" SET value="+content+" WHERE key="+filename;
+            let stmt="UPDATE "+UName+" SET value="+content+" WHERE key='"+filename+"'";
             db.all(stmt,function(err,result){
                 if(err==null)
                 {
